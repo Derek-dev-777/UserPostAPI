@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,9 @@ public class UserEntity {
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
 	
+	@OneToMany(mappedBy = "userAuthor", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PostEntity> posts = new ArrayList<PostEntity>();
+	
 	
 	public UserEntity() {}
 	
@@ -47,6 +51,7 @@ public class UserEntity {
 	public String getEmail() { return email; }
 	public String getPassword() { return password; }
 	public LocalDateTime getCreatedAt() { return createdAt; }
+	public List<PostEntity> getPosts() { return posts; }
 
 
 	public void setName(String name) { this.name = name; }

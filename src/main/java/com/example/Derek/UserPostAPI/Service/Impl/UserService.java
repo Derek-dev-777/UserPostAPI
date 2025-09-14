@@ -15,6 +15,8 @@ import com.example.Derek.UserPostAPI.Mappers.UserMapper;
 import com.example.Derek.UserPostAPI.Repository.UserRepository;
 import com.example.Derek.UserPostAPI.Service.Interfaces.UserServiceInterface;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService implements UserServiceInterface {
 	
@@ -26,14 +28,16 @@ public class UserService implements UserServiceInterface {
 	public UserService(UserRepository repository) {
 		this.userRepository = repository;
 	}
-
+	
+	@Transactional
 	@Override
 	public UserGetDTO findUserById(Long id) {
 		UserEntity userFound = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
 		UserGetDTO userToReturn = UserMapper.convertEntityToDto(userFound);
 		return userToReturn;
 	}
-
+	
+	@Transactional
 	@Override
 	public List<UserGetDTO> findAllUsers() {
 		List<UserEntity> listOfUserEntity = userRepository.findAll();
@@ -76,6 +80,5 @@ public class UserService implements UserServiceInterface {
 		}
 		
 	}
-
 
 }
