@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Derek.UserPostAPI.DTOs.CommentDTOs.CommentGetDTO;
+import com.example.Derek.UserPostAPI.DTOs.PostDTOs.PostGetDTO;
 import com.example.Derek.UserPostAPI.DTOs.UserDTOs.UserGetDTO;
 import com.example.Derek.UserPostAPI.DTOs.UserDTOs.UserPostDTO;
 import com.example.Derek.UserPostAPI.DTOs.UserDTOs.UserPutDTO;
@@ -40,6 +42,18 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<UserGetDTO>> findAllUsers(){
 		List<UserGetDTO> listToReturn = userService.findAllUsers();
+		return ResponseEntity.ok(listToReturn);
+	}
+	
+	@GetMapping("/posts/{id}")
+	public ResponseEntity<List<PostGetDTO>> findAllPostsOfUserID(@PathVariable Long id){
+		List<PostGetDTO> listToReturn = userService.findAllPostsOfUserID(id);
+		return ResponseEntity.ok(listToReturn);
+	}
+	
+	@GetMapping("/comments/{id}")
+	public ResponseEntity<List<CommentGetDTO>> findAllCommentsOfUserID(@PathVariable Long id){
+		List<CommentGetDTO> listToReturn = userService.findAllCommentsOfUserID(id);
 		return ResponseEntity.ok(listToReturn);
 	}
 	

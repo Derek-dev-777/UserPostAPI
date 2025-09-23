@@ -1,7 +1,10 @@
 package com.example.Derek.UserPostAPI.Entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,6 +38,9 @@ public class PostEntity {
 	@JoinColumn(name = "user_id")
 	private UserEntity userAuthor;
 	
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+	
 	public PostEntity() {}
 
 	public PostEntity(String title, String content,UserEntity userAuthor) {
@@ -47,6 +54,7 @@ public class PostEntity {
 	public String getContent() { return content; }
 	public LocalDateTime getCreatedAt() { return createdAt; }
 	public UserEntity getUserAuthor() { return userAuthor; }
+	public List<CommentEntity> getComments() { return comments; }
 
 	public void setTitle(String title) { this.title = title; }
 	public void setContent(String content) { this.content = content; }

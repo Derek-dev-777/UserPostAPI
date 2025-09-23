@@ -16,8 +16,12 @@ public class UserMapper {
 	                entity.getCreatedAt(),
 	                entity.getPosts().stream()
 	                      .map(PostMapper::convertEntityToDto)
+	                      .collect(Collectors.toList()),
+	                entity.getComments().stream()
+	                      .map(CommentMapper::convertEntityToDto)
 	                      .collect(Collectors.toList())
 	        );
+	        		
 	    }
 	
 	public static UserEntity convertDtoToEntity(UserPostDTO dto) {

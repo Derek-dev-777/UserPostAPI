@@ -7,10 +7,16 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Derek.UserPostAPI.DTOs.CommentDTOs.CommentGetDTO;
+import com.example.Derek.UserPostAPI.DTOs.PostDTOs.PostGetDTO;
 import com.example.Derek.UserPostAPI.DTOs.UserDTOs.UserGetDTO;
 import com.example.Derek.UserPostAPI.DTOs.UserDTOs.UserPostDTO;
 import com.example.Derek.UserPostAPI.DTOs.UserDTOs.UserPutDTO;
+import com.example.Derek.UserPostAPI.Entity.CommentEntity;
+import com.example.Derek.UserPostAPI.Entity.PostEntity;
 import com.example.Derek.UserPostAPI.Entity.UserEntity;
+import com.example.Derek.UserPostAPI.Mappers.CommentMapper;
+import com.example.Derek.UserPostAPI.Mappers.PostMapper;
 import com.example.Derek.UserPostAPI.Mappers.UserMapper;
 import com.example.Derek.UserPostAPI.Repository.UserRepository;
 import com.example.Derek.UserPostAPI.Service.Interfaces.UserServiceInterface;
@@ -49,7 +55,33 @@ public class UserService implements UserServiceInterface {
 		}
 		return listOfUserToReturn;
 	}
-
+	
+	@Transactional
+	@Override
+	public List<PostGetDTO> findAllPostsOfUserID(Long id) {
+		UserEntity userToGetPosts = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found"));
+		List<PostEntity> listOfPosts = userToGetPosts.getPosts();
+		List<PostGetDTO> listToReturn = new ArrayList<>();
+		
+		for(PostEntity posts : listOfPosts) {
+			listToReturn.add(PostMapper.convertEntityToDto(posts));
+		}
+		return listToReturn;
+	}
+	
+	@Transactional
+	@Override
+	public List<CommentGetDTO> findAllCommentsOfUserID(Long id) {
+		UserEntity userToGetComments = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found"));
+		List<CommentEntity> listOfComments = userToGetComments.getComments();
+		List<CommentGetDTO> listToReturn = new ArrayList<>();
+		
+		for(CommentEntity comment : listOfComments) {
+			listToReturn.add(CommentMapper.convertEntityToDto(comment));
+		}
+		return listToReturn;
+	}
+	
 	@Override
 	public UserGetDTO createUser(UserPostDTO dto) {
 		UserEntity userSavedAndCreated = userRepository.save(new UserEntity(
@@ -80,5 +112,6 @@ public class UserService implements UserServiceInterface {
 		}
 		
 	}
+
 
 }

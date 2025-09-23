@@ -37,6 +37,9 @@ public class UserEntity {
 	@OneToMany(mappedBy = "userAuthor", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PostEntity> posts = new ArrayList<PostEntity>();
 	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+	
 	
 	public UserEntity() {}
 	
@@ -52,7 +55,7 @@ public class UserEntity {
 	public String getPassword() { return password; }
 	public LocalDateTime getCreatedAt() { return createdAt; }
 	public List<PostEntity> getPosts() { return posts; }
-
+	public List<CommentEntity> getComments() { return comments; }
 
 	public void setName(String name) { this.name = name; }
 	public void setEmail(String email) { this.email = email; }
